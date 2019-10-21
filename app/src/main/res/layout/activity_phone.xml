@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp"
+    android:orientation="vertical"
+    tools:context=".PhoneActivity">
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edit_c_code"
+            android:layout_width="70dp"
+            android:textAlignment="viewEnd"
+            android:text="+996"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/editPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/edit_new_code"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/button_confirm"
+
+        android:layout_width="match_parent"
+        android:onClick="onClick"
+        android:text="Подтвердить"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/button_code"
+
+        android:layout_width="match_parent"
+        android:onClick="onClick"
+        android:visibility="gone"
+        android:text="Введите код"
+        android:layout_height="wrap_content"/>
+
+
+
+</LinearLayout>
