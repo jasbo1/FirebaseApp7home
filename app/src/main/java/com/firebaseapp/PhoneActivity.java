@@ -31,8 +31,10 @@ public class PhoneActivity extends AppCompatActivity {
     private EditText edit_new_code;
     Button button_confirm;
     Button button_code;
+    FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     private boolean isCodeSent;
+    String codeInet,myCode;
 
 
     @Override
@@ -44,20 +46,19 @@ public class PhoneActivity extends AppCompatActivity {
         edit_new_code = findViewById(R.id.edit_new_code);
         button_confirm = findViewById(R.id.button_confirm);
         button_code = findViewById(R.id.button_code);
-
+        mAuth=FirebaseAuth.getInstance();
+        button_code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myCode=edit_new_code.getText().toString().trim();
+                PhoneAuthCredential credential=PhoneAuthProvider.getCredential(codeInet,myCode);
+                signIn(credential);
+            }
+        });
         callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 Log.e("TAG", "onVerificationCompleted");
-                if (isCodeSent) {
-
-                    signIn(phoneAuthCredential);
-
-                } else {
-                   // signIn(phoneAuthCredential);
-                }
-
-
             }
 
             @Override
@@ -73,14 +74,9 @@ public class PhoneActivity extends AppCompatActivity {
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
                 isCodeSent = true;
-                //показать view для ввода кода смс
-                if(isCodeSent) {
-                    button_confirm.setVisibility(View.GONE);
-                    editPhone.setVisibility(View.GONE);
-                    edit_new_code.setVisibility(View.VISIBLE);
-                    button_code.setVisibility(View.VISIBLE);
-                    Log.e("ololo", "onCodeSent()");
-                }
+                codeInet=s;
+
+
             }
            @Override
             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
@@ -98,22 +94,8 @@ public class PhoneActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(PhoneActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
-
-
-                           button_code.setOnClickListener(new View.OnClickListener() {
-                               @Override
-                               public void onClick(View v) {
-                                   //String s = editText2.getText().toString().trim();
-                                   if (edit_new_code.length() == 6) {
-                                       startActivity(new Intent(PhoneActivity.this, MainActivity.class));
+                            startActivity(new Intent(PhoneActivity.this, MainActivity.class));
                                        Log.e("ololo", "signIn(phoneAuthCredential) in btnConfirmCode");
-                                   } else {
-                                       Toast.makeText(PhoneActivity.this, "Введите код!", Toast.LENGTH_SHORT);
-                                       Log.e("ololo", "Toast");
-
-                                   }
-                               }
-                           });
 
                             } else {
                             Log.e("TAG", "Ошибка авторизации");
@@ -132,8 +114,6 @@ public class PhoneActivity extends AppCompatActivity {
             editPhone.setError("Укажите номер телефона");
             return;
         }
-
-
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phone,
                 30,
@@ -149,17 +129,6 @@ public class PhoneActivity extends AppCompatActivity {
         button_code.setVisibility(View.VISIBLE);
         edit_new_code.setVisibility(View.VISIBLE);
 
-
-        button_code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                
-
-
-
-
-            }
-        });
     }
     }
 
